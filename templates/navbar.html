@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+        <!-- Logo 和系統標題 -->
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-heart-pulse-fill me-2"></i>護理人員排班系統
+        </a>
+        
+        <!-- 漢堡選單按鈕 (小螢幕) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- 導覽列內容 -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- 管理員功能選單 -->
+                {% if session['role'] == 'admin' %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear-fill me-1"></i>系統管理
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user_manage"><i class="bi bi-person-gear me-2"></i>使用者管理</a></li>
+                        <li><a class="dropdown-item" href="/staff"><i class="bi bi-people me-2"></i>人員管理</a></li>
+                        <li><a class="dropdown-item" href="/shift"><i class="bi bi-clock-history me-2"></i>班別設定</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/schedule"><i class="bi bi-lightning-charge me-2"></i>自動排班</a></li>
+                        <li><a class="dropdown-item" href="/leave_manage"><i class="bi bi-calendar-x me-2"></i>請假管理</a></li>
+                        <li><a class="dropdown-item" href="/oncall_manage"><i class="bi bi-telephone me-2"></i>On Call 管理</a></li>
+                        <li><a class="dropdown-item" href="/night_shift_allocation"><i class="bi bi-moon-stars me-2"></i>大夜班分配</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+                
+                <!-- 班表相關功能 -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-calendar-check me-1"></i>班表管理
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/view_schedule"><i class="bi bi-list-task me-2"></i>班表查詢</a></li>
+                        <li><a class="dropdown-item" href="/staff_schedule_table"><i class="bi bi-table me-2"></i>員工橫式班表</a></li>
+                        <li><a class="dropdown-item" href="/weekly_stats"><i class="bi bi-graph-up me-2"></i>週工時統計</a></li>
+                        {% if session['role'] == 'admin' %}
+                        <li><a class="dropdown-item" href="/schedule_log"><i class="bi bi-journal-text me-2"></i>班表異動紀錄</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="/pivot_schedule" target="_blank"><i class="bi bi-bar-chart-line me-2"></i>班表分析</a></li>
+                    </ul>
+                </li>
+                
+                <!-- 首頁連結 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="bi bi-house-fill me-1"></i>首頁
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- 用戶資訊和登出 -->
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle user-info" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i>
+                        {{ session['username'] }}（{{ '管理員' if session['role']=='admin' else '護理人員' }}）
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><span class="dropdown-item-text text-muted"><small>已登入</small></span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>登出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav> 

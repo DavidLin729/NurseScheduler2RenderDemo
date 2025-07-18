@@ -1,33 +1,31 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <title>排班偏好設定</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body { background: #fff0f6; }
-        h2 { color: #d72660; }
-        .btn-primary, .btn-success, .btn-warning, .btn-danger, .btn-info, .btn-secondary {
-            border: none;
-        }
-        .btn-primary { background: #ffb6d5; color: #d72660; }
-        .btn-primary:hover { background: #ffd6e0; color: #d72660; }
-        .btn-success { background: #ffd6e0; color: #d72660; }
-        .btn-success:hover { background: #ffb6d5; color: #d72660; }
-        .btn-warning { background: #ffe0f0; color: #d72660; }
-        .btn-warning:hover { background: #ffd6e0; color: #d72660; }
-        .btn-danger { background: #ffb6b6; color: #d72660; }
-        .btn-danger:hover { background: #ffb6d5; color: #d72660; }
-        .btn-info { background: #ffd6e0; color: #d72660; }
-        .btn-info:hover { background: #ffb6d5; color: #d72660; }
-        .btn-secondary { background: #f8bbd0; color: #d72660; }
-        .btn-secondary:hover { background: #ffd6e0; color: #d72660; }
-        .modal-content { background: #fffafd; }
-        .table-bordered th, .table-bordered td { background: #fffafd; }
-        .preference-form { background: #fffafd; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}排班偏好設定{% endblock %}
+
+{% block extra_css %}
+<style>
+    .btn-primary, .btn-success, .btn-warning, .btn-danger, .btn-info, .btn-secondary {
+        border: none;
+    }
+    .btn-primary { background: #ffb6d5; color: #d72660; }
+    .btn-primary:hover { background: #ffd6e0; color: #d72660; }
+    .btn-success { background: #ffd6e0; color: #d72660; }
+    .btn-success:hover { background: #ffb6d5; color: #d72660; }
+    .btn-warning { background: #ffe0f0; color: #d72660; }
+    .btn-warning:hover { background: #ffd6e0; color: #d72660; }
+    .btn-danger { background: #ffb6b6; color: #d72660; }
+    .btn-danger:hover { background: #ffb6d5; color: #d72660; }
+    .btn-info { background: #ffd6e0; color: #d72660; }
+    .btn-info:hover { background: #ffb6d5; color: #d72660; }
+    .btn-secondary { background: #f8bbd0; color: #d72660; }
+    .btn-secondary:hover { background: #ffd6e0; color: #d72660; }
+    .modal-content { background: #fffafd; }
+    .table-bordered th, .table-bordered td { background: #fffafd; }
+    .preference-form { background: #fffafd; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+</style>
+{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
     <h2>排班偏好設定</h2>
     <div class="mb-3 d-flex gap-2">
@@ -203,8 +201,9 @@
     </div>
 </div>
 {% endfor %}
+{% endblock %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}
 <script>
 // 新增表單的偏好類型變更處理
 document.getElementById('preferenceType').addEventListener('change', function() {
@@ -248,5 +247,4 @@ document.getElementById('editPreferenceType{{ pref.id }}').addEventListener('cha
 });
 {% endfor %}
 </script>
-</body>
-</html> 
+{% endblock %} 

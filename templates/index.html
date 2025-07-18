@@ -1,68 +1,338 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <title>護理人員排班系統</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <style>
-        body { background: #fff0f6; }
-        .main-card {
-            max-width: 520px;
-            margin: 60px auto;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(255, 128, 192, 0.10);
-            border: 1.5px solid #ffb6d5;
-            background: #fffafd;
+{% extends "base.html" %}
+
+{% block title %}護理人員排班系統{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #ffb6d5 0%, #ffd6e0 100%);
+        border-radius: 20px;
+        padding: 25px 20px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(255, 128, 192, 0.15);
+    }
+    
+    .hero-title {
+        color: #d72660;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-shadow: 0 2px 4px rgba(215, 38, 96, 0.1);
+    }
+    
+    .hero-subtitle {
+        color: #d72660;
+        font-size: 1rem;
+        opacity: 0.8;
+        margin: 0;
+    }
+    
+    .section-card {
+        background: #fffafd;
+        border-radius: 16px;
+        border: 1.5px solid #ffb6d5;
+        box-shadow: 0 4px 20px rgba(255, 128, 192, 0.08);
+        margin-bottom: 25px;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(255, 128, 192, 0.15);
+    }
+    
+    .section-header {
+        background: linear-gradient(135deg, #ffd6e0 0%, #ffe0f0 100%);
+        padding: 20px 25px;
+        border-bottom: 1px solid #ffb6d5;
+    }
+    
+    .section-title {
+        color: #d72660;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-description {
+        color: #d72660;
+        font-size: 0.9rem;
+        opacity: 0.7;
+        margin: 5px 0 0 0;
+    }
+    
+    .section-body {
+        padding: 25px;
+    }
+    
+    .function-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+    }
+    
+    .function-btn {
+        background: linear-gradient(135deg, #fff 0%, #fffafd 100%);
+        border: 2px solid #ffb6d5;
+        border-radius: 12px;
+        padding: 18px 20px;
+        text-decoration: none;
+        color: #d72660;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .function-btn:hover {
+        background: linear-gradient(135deg, #ffd6e0 0%, #ffe0f0 100%);
+        border-color: #d72660;
+        color: #d72660;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(215, 38, 96, 0.15);
+        text-decoration: none;
+    }
+    
+    .function-btn i {
+        font-size: 1.3rem;
+        width: 24px;
+        text-align: center;
+    }
+    
+    .function-btn .btn-text {
+        flex: 1;
+    }
+    
+    .function-btn .btn-description {
+        font-size: 0.8rem;
+        opacity: 0.7;
+        margin-top: 4px;
+        display: block;
+    }
+    
+    .admin-badge {
+        background: #d72660;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+        margin-left: auto;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 1.8rem;
         }
-        .main-title {
-            color: #d72660;
-            font-weight: bold;
-            letter-spacing: 2px;
+        
+        .function-grid {
+            grid-template-columns: 1fr;
         }
-        .btn-pink {
-            background: linear-gradient(90deg, #ffb6d5 0%, #ffd6e0 100%);
-            color: #d72660;
-            border: none;
-        }
-        .btn-pink:hover {
-            background: linear-gradient(90deg, #ffd6e0 0%, #ffb6d5 100%);
-            color: #fff;
-        }
-    </style>
-  </head>
-<body>
-  <div class="container">
-    <div class="d-flex justify-content-end align-items-center mt-3 mb-0">
-      <span class="me-3 text-secondary">
-        <i class="bi bi-person-circle me-1"></i>
-        {{ session['username'] }}（{{ '管理員' if session['role']=='admin' else '護理人員' }}）
-      </span>
-      <a href="/logout" class="btn btn-outline-secondary btn-sm">登出</a>
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- 英雄區塊 -->
+    <div class="hero-section">
+        <h1 class="hero-title">
+            <i class="bi bi-heart-pulse-fill me-3"></i>護理人員排班系統
+        </h1>
+        <p class="hero-subtitle">Version 2.0 for public use</p>
     </div>
-    <div class="card main-card mt-3">
-        <div class="card-body p-4">
-            <h1 class="main-title text-center mb-4">
-                <i class="bi bi-heart-pulse-fill me-2"></i>護理人員排班系統
-            </h1>
-            <div class="d-grid gap-3">
-                {% if session['role'] == 'admin' %}
-                <a href="/user_manage" class="btn btn-pink btn-lg"><i class="bi bi-person-gear me-2"></i>使用者管理</a>
-                <a href="/staff" class="btn btn-pink btn-lg"><i class="bi bi-people me-2"></i>人員管理</a>
-                <a href="/shift" class="btn btn-pink btn-lg"><i class="bi bi-clock-history me-2"></i>班別設定</a>
-                <a href="/schedule" class="btn btn-pink btn-lg"><i class="bi bi-lightning-charge me-2"></i>自動排班</a>
-                <a href="/leave_manage" class="btn btn-pink btn-lg"><i class="bi bi-calendar-x me-2"></i>請假管理</a>
-                <a href="/oncall_manage" class="btn btn-pink btn-lg"><i class="bi bi-telephone me-2"></i>星期天 On Call 管理</a>
-                <a href="/night_shift_allocation" class="btn btn-pink btn-lg"><i class="bi bi-moon-stars me-2"></i>大夜班預先分配</a>
-                {% endif %}
-                <a href="/view_schedule" class="btn btn-pink btn-lg"><i class="bi bi-list-task me-2"></i>班表查詢</a>
-                <a href="/weekly_stats" class="btn btn-pink btn-lg"><i class="bi bi-graph-up me-2"></i>週工時統計</a>
-                {% if session['role'] == 'admin' %}
-                <a href="/schedule_log" class="btn btn-pink btn-lg"><i class="bi bi-journal-text me-2"></i>班表異動紀錄</a>
-                {% endif %}
-                <a href="/pivot_schedule" class="btn btn-pink btn-lg" target="_blank"><i class="bi bi-bar-chart-line me-2"></i>班表分析</a>
+
+
+
+    <!-- 系統設定區塊 -->
+    {% if session['role'] == 'admin' %}
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="bi bi-gear-fill"></i>系統設定
+            </h2>
+            <p class="section-description">基礎資料設定與系統管理功能</p>
+        </div>
+        <div class="section-body">
+            <div class="function-grid">
+                <a href="/user_manage" class="function-btn">
+                    <i class="bi bi-person-gear"></i>
+                    <div class="btn-text">
+                        使用者管理
+                        <span class="btn-description">管理系統使用者帳號與權限</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+                <a href="/staff" class="function-btn">
+                    <i class="bi bi-people"></i>
+                    <div class="btn-text">
+                        人員管理
+                        <span class="btn-description">新增、編輯護理人員基本資料</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+                <a href="/shift" class="function-btn">
+                    <i class="bi bi-clock-history"></i>
+                    <div class="btn-text">
+                        班別設定
+                        <span class="btn-description">設定各種班別類型與時間</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
             </div>
         </div>
     </div>
-</body>
-</html> 
+    {% endif %}
+
+    <!-- 排班作業區塊 -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="bi bi-calendar-check"></i>排班作業
+            </h2>
+            <p class="section-description">智能排班與相關設定功能</p>
+        </div>
+        <div class="section-body">
+            <div class="function-grid">
+                {% if session['role'] == 'admin' %}
+                <a href="/schedule" class="function-btn">
+                    <i class="bi bi-lightning-charge"></i>
+                    <div class="btn-text">
+                        自動排班
+                        <span class="btn-description">使用智能演算法自動產生排班表</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+                <a href="/night_shift_allocation" class="function-btn">
+                    <i class="bi bi-moon-stars"></i>
+                    <div class="btn-text">
+                        夜班預先分配
+                        <span class="btn-description">預先設定夜班人員分配</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+                {% endif %}
+                <a href="/view_schedule" class="function-btn">
+                    <i class="bi bi-list-task"></i>
+                    <div class="btn-text">
+                        班表查詢
+                        <span class="btn-description">查看與搜尋排班表</span>
+                    </div>
+                </a>
+                <a href="/staff_schedule_table" class="function-btn">
+                    <i class="bi bi-table"></i>
+                    <div class="btn-text">
+                        員工橫式班表
+                        <span class="btn-description">以人員為主的班表檢視</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 請假與 On Call 管理區塊 -->
+    {% if session['role'] == 'admin' %}
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="bi bi-calendar-x"></i>請假與 On Call 管理
+            </h2>
+            <p class="section-description">管理請假申請與星期天 On Call 安排</p>
+        </div>
+        <div class="section-body">
+            <div class="function-grid">
+                <a href="/leave_manage" class="function-btn">
+                    <i class="bi bi-calendar-x"></i>
+                    <div class="btn-text">
+                        請假管理
+                        <span class="btn-description">處理員工請假申請與核准</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+                <a href="/oncall_manage" class="function-btn">
+                    <i class="bi bi-telephone"></i>
+                    <div class="btn-text">
+                        星期天 On Call 管理
+                        <span class="btn-description">安排星期天的 On Call 人員</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 分析與統計區塊 -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="bi bi-graph-up"></i>分析與統計
+            </h2>
+            <p class="section-description">排班數據分析與統計報表</p>
+        </div>
+        <div class="section-body">
+            <div class="function-grid">
+                <a href="/weekly_stats" class="function-btn">
+                    <i class="bi bi-graph-up"></i>
+                    <div class="btn-text">
+                        週工時統計
+                        <span class="btn-description">查看每週工時統計與分析</span>
+                    </div>
+                </a>
+                <a href="/pivot_schedule" class="function-btn" target="_blank">
+                    <i class="bi bi-bar-chart-line"></i>
+                    <div class="btn-text">
+                        班表分析
+                        <span class="btn-description">樞紐分析表檢視排班數據</span>
+                    </div>
+                </a>
+                {% if session['role'] == 'admin' %}
+                <a href="/schedule_log" class="function-btn">
+                    <i class="bi bi-journal-text"></i>
+                    <div class="btn-text">
+                        班表異動紀錄
+                        <span class="btn-description">查看排班表的修改歷史</span>
+                    </div>
+                    <span class="admin-badge">管理員</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 個人設定區塊 -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="bi bi-person-circle"></i>個人設定
+            </h2>
+            <p class="section-description">個人偏好設定與資料管理</p>
+        </div>
+        <div class="section-body">
+            <div class="function-grid">
+                <a href="/staff_preference" class="function-btn">
+                    <i class="bi bi-heart"></i>
+                    <div class="btn-text">
+                        排班偏好設定
+                        <span class="btn-description">設定個人排班偏好與限制</span>
+                    </div>
+                </a>
+                <a href="/calendar_view" class="function-btn">
+                    <i class="bi bi-calendar3"></i>
+                    <div class="btn-text">
+                        月曆檢視
+                        <span class="btn-description">以月曆形式檢視排班表</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
