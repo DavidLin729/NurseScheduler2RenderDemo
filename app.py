@@ -155,11 +155,8 @@ def init_db():
         data_dir = '/var/data'
     else:
         data_dir = 'data'
-    
-    # 確保資料目錄存在
-    if not os.path.exists(data_dir):
-        os.makedirs(data_dir, exist_ok=True)
-    
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir, exist_ok=True)
     conn = sqlite3.connect(os.path.join(data_dir, 'staff.db'))
     c = conn.cursor()
     c.execute('CREATE TABLE IF NOT EXISTS staff (staff_id TEXT PRIMARY KEY, name TEXT, title TEXT, ward TEXT)')
@@ -282,11 +279,8 @@ def get_db_connection():
         data_dir = '/var/data'
     else:
         data_dir = 'data'
-    
-    # 確保資料目錄存在
-    if not os.path.exists(data_dir):
-        os.makedirs(data_dir, exist_ok=True)
-    
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir, exist_ok=True)
     conn = sqlite3.connect(os.path.join(data_dir, 'staff.db'))
     conn.row_factory = sqlite3.Row
     return conn
