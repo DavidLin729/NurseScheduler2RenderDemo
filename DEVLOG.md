@@ -23,7 +23,7 @@
 - **模板繼承架構**：
   - `base.html`：包含 HTML 基本結構、Bootstrap CSS/JS、導覽列引入
   - `navbar.html`：獨立的導覽列組件，包含所有選單項目
-  - 頁面模板：繼承 `base.html`，內容放入 `{% block content %}`
+  - 頁面模板：繼承 `base.html`，內容放入 {% block content %}
 
 - **組件化設計**：
   - 導覽列為獨立組件，修改只需要更新一個檔案
