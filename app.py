@@ -150,8 +150,13 @@ def validate_schedule_requirements(dates, staff_list, shifts, night_shift_alloca
     return validation_results['overall_passed'], validation_results
 
 def init_db():
+    # 根據環境決定資料庫路徑
+    if os.environ.get('FLASK_ENV') == 'production':
+        data_dir = '/var/data'
+    else:
+        data_dir = 'data'
+    
     # 確保資料目錄存在
-    data_dir = '/var/data'
     if not os.path.exists(data_dir):
         os.makedirs(data_dir, exist_ok=True)
     
@@ -272,8 +277,13 @@ def init_db():
 init_db()
 
 def get_db_connection():
+    # 根據環境決定資料庫路徑
+    if os.environ.get('FLASK_ENV') == 'production':
+        data_dir = '/var/data'
+    else:
+        data_dir = 'data'
+    
     # 確保資料目錄存在
-    data_dir = '/var/data'
     if not os.path.exists(data_dir):
         os.makedirs(data_dir, exist_ok=True)
     
