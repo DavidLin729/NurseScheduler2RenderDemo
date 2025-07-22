@@ -24,6 +24,8 @@
 
 ## 安裝與啟動
 
+### 本地開發環境
+
 1. **安裝 Python 3.8+**
 2. **安裝必要套件**
    ```bash
@@ -34,7 +36,20 @@
    python app.py
    ```
 4. **瀏覽器開啟**
-   http://127.0.0.1:5000/
+   http://127.0.0.1:5001/
+
+### Render 雲端部署
+
+1. **連接 GitHub 倉庫**
+   - 登入 [Render Dashboard](https://dashboard.render.com/)
+   - 選擇此專案倉庫：`DavidLin729/NurseScheduler2RenderDemo`
+
+2. **一鍵部署**
+   - 系統會自動使用 `render.yaml` 配置
+   - 資料庫會自動初始化在持久化磁碟
+
+3. **詳細部署說明**
+   請參考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件
 
 ---
 

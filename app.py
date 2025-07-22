@@ -150,7 +150,12 @@ def validate_schedule_requirements(dates, staff_list, shifts, night_shift_alloca
     return validation_results['overall_passed'], validation_results
 
 def init_db():
-    conn = sqlite3.connect(os.path.join('data', 'staff.db'))
+    # 確保資料目錄存在
+    data_dir = '/var/data'
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir, exist_ok=True)
+    
+    conn = sqlite3.connect(os.path.join(data_dir, 'staff.db'))
     c = conn.cursor()
     c.execute('CREATE TABLE IF NOT EXISTS staff (staff_id TEXT PRIMARY KEY, name TEXT, title TEXT, ward TEXT)')
     c.execute('CREATE TABLE IF NOT EXISTS shift (shift_id TEXT PRIMARY KEY, name TEXT, time TEXT, required_count INTEGER, ward TEXT)')
@@ -267,7 +272,12 @@ def init_db():
 init_db()
 
 def get_db_connection():
-    conn = sqlite3.connect(os.path.join('data', 'staff.db'))
+    # 確保資料目錄存在
+    data_dir = '/var/data'
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir, exist_ok=True)
+    
+    conn = sqlite3.connect(os.path.join(data_dir, 'staff.db'))
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -3091,4 +3101,8 @@ def export_staff_schedule_table():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5001)
+    # 檢查是否為生產環境
+    port = int(os.environ.get('PORT', 5001))
+    debug = os.environ.get('FLASK_ENV') == 'development'
+    host = '0.0.0.0' if not debug else '127.0.0.1'
+    app.run(debug=debug, host=host, port=port)
